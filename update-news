@@ -1,0 +1,15 @@
+#!/bin/sh
+
+PSQL="psql -h gs2016.local -d geekspeak -U miles -tf"
+
+DIR=$(dirname "$0")
+
+echo "Directory is $DIR"
+
+$PSQL "$DIR/pending-feeds.sql"   \
+  | nodejs                       \
+      "$DIR/extract-feeds.js"    \
+  | tee "$DIR/news.csv"          \
+  | $PSQL "$DIR/import-news.sql"
+
+#      --web-host 0.0.0.0         \

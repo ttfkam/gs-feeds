@@ -1,0 +1,25 @@
+{
+  "name": "gsfeeds",
+  "version": "1.0.0",
+  "description": "Feed Scraper for GeekSpeak",
+  "main": "extract-feeds.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "feed",
+    "RSS",
+    "GeekSpeak",
+    "HTML",
+    "Open Graph",
+    "news"
+  ],
+  "author": "Miles Elam",
+  "license": "ISC",
+  "dependencies": {
+    "co": "^4.6.0",
+    "gs-html-request": "1.0.0",
+    "gs-html-extract": "1.0.0",
+    "gs-stdin": "1.0.0"
+  }
+}
