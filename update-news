@@ -8,7 +8,7 @@ echo "Directory is $DIR"
 
 $PSQL "$DIR/pending-feeds.sql"   \
   | nodejs                       \
-      "$DIR/extract-feeds.js"    \
+      "$DIR/gs-feeds.js"    \
   | tee "$DIR/news.csv"          \
   | $PSQL "$DIR/import-news.sql"
 

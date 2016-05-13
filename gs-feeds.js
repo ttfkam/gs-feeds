@@ -16,9 +16,9 @@
 // Tell Node's memory leak checks to stand down
 require('events').defaultMaxListeners = 100;
 
-let requestPage = require('gs-html-request'),
-    extract = require('gs-html-extract'),
-    stdin = require('gs-stdin'),
+let requestPage = require('./gs-html-request'),
+    extract = require('./gs-html-extract'),
+    stdin = require('./gs-stdin'),
     co = require('co'),
     err = process.stderr,
     out = process.stdout;
