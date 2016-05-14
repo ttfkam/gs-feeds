@@ -1,6 +1,6 @@
 #!/bin/sh
 
-PSQL="psql -h gs2016.local -d geekspeak -U miles -tf"
+PSQL="psql -h $PG_HOST -d $PG_DB -U $PG_USER -tf"
 
 DIR=$(dirname "$0")
 
