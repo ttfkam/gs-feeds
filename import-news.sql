@@ -6,7 +6,7 @@ ALTER TABLE _import DROP COLUMN id;
 ALTER TABLE _import ADD COLUMN remote_id character varying(32);
 ALTER TABLE _import ADD COLUMN content text;
 
-\copy _import (newsfeed, source, url, metadata, discussion, labels, content, image_url, remote_id) FROM PSTDIN WITH CSV;
+\copy _import (newsfeed, source, url, metadata, discussion, labels, content, thumbnail, remote_id) FROM PSTDIN WITH CSV;
 
 INSERT INTO aggregator.headlines (newsfeed, source, url, metadata, https, discussion, labels, fts, thumbnail) (SELECT newsfeed, source, url, metadata, url ~ '^https:', discussion, labels, setweight(to_tsvector(coalesce(title,'')), 'A') || setweight(to_tsvector(coalesce(description, '')), 'B') || setweight(to_tsvector(coalesce(content, '')), 'D'), thumbnail FROM _import) ON CONFLICT DO NOTHING;
 
