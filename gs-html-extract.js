@@ -10,19 +10,18 @@ function extractLinks(feed, html) {
   err.write(`${feed.url} loaded...`)
   let $ = cheerio.load(html),
       links = [],
-      selector = `${feed.entries}:not(${feed.exclude})`,
-      $elements = $(selector);
-  $elements.each((index, el) => {
+      selector = `${feed.entries[0]}:not(${feed.exclude})`;
+  $(selector).each((index, el) => {
     let $el = $(el);
     links.push({
       feedId: feed.id,
       title: $el.find(feed.title).text(),
       url: $el.find(feed.link).attr('href'),
       label: $el.find(feed.label).text(),
-      discussion: $el.find(feed.discussion).attr('href')
+      discussion: $el.find(feed.discussion).attr('href'),
+      remote_id: $el.attr("id").substring("thing_".length)
     });
   });
-  err.write("and processed\n")
   return links;
 }
 
@@ -55,7 +54,8 @@ function extractMetadata(entry, html) {
     entry.discussion,
     escapeLabels(entry.label, info.news_keywords),
     (info.content || "").replace(/[\n\r]+/g, " "),
-    info.image
+    info.image,
+    entry.remote_id
   ];
 }
 
