@@ -18,7 +18,7 @@
   "license": "ISC",
   "dependencies": {
     "co": "^4.6.0",
-    "cheerio": "^0.20.0",    // for gs-html-extract
-    "node-request": "0.0.3"  // for gs-html-request
+    "cheerio": "^0.20.0",
+    "node-request": "0.0.3"
   }
 }
