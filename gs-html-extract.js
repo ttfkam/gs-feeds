@@ -47,10 +47,12 @@ function extractMetadata(entry, html) {
     info.site_name || info.cre
                    || entry.url.match(/^https?:\/\/(?:www\.|mail\.|hosted\.)?([^\/:]+)/)[1],
     url.charAt(0) === '/' ? entry.url : url || entry.url,
-    info.title || entry.title,
-    (info.description || "").replace(/[\n\r]+/g, " "),
-    info.type || "article",
-    info.locale || "en_US",
+    {
+      title: info.title || entry.title,
+      description: (info.description || "").replace(/[\n\r]+/g, " "),
+      type: info.type || "article",
+      locale: info.locale || "en"
+    },
     entry.discussion,
     escapeLabels(entry.label, info.news_keywords),
     (info.content || "").replace(/[\n\r]+/g, " "),
