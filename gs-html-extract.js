@@ -32,7 +32,7 @@ function getContent($) {
 }
 
 function extractMetadata(entry, html) {
-  try {
+  err.write(`Info: Loaded ${entry.url}: ${html.substring(0,40)}...`);
   let $ = cheerio.load(html),
       info = extract($, $("meta[property]"),$("meta[name]"),$("link[rel]"));
   FIELDS.forEach(field => {
@@ -60,9 +60,6 @@ function extractMetadata(entry, html) {
     info.image,
     entry.remote_id
   ];
-  } catch (e) {
-    return [e];
-  }
 }
 
 function extract($, $prop, $name, $rel) {
