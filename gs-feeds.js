@@ -47,15 +47,11 @@ function loadFeeds() {
 function csvQuote(value, index) {
   if (index === 0) {  // First entry is a feed id (integer)
     return value;
-  }
-  switch (typeof value) {
-    case "string":
-      return '"' + value.replace(/\"/g, '""') + '"';
-    
-    case "object":
-      return '"' + JSON.stringify(value).replace(/\"/g, '""') + '"';
-    
-    default:
-      return "";
+  } else if (typeof value === "object") {
+    return '"' + JSON.stringify(value).replace(/\"/g, '""') + '"';
+  } else if (!!value) {
+    return "";
+  } else {
+    return '"' + value.replace(/\"/g, '""') + '"';
   }
 }
