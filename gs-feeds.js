@@ -40,7 +40,6 @@ function loadFeeds() {
     err.write(`Loading ${results.length} entries from ${feeds.length} feed(s)\n`);
     // Extract info and write out as CSV
     let rows = yield Promise.all(results);
-    err.write(`Loaded ${rows.length} entries from ${feeds.length} feed(s)\n`);
     rows.filter(row => !!row).forEach(row => out.write(row.map(csvQuote).join(',') + '\n'));
   });
 }
@@ -49,5 +48,14 @@ function csvQuote(value, index) {
   if (index === 0) {  // First entry is a feed id (integer)
     return value;
   }
-  return value ? '"' + value.replace(/\"/g, '""') + '"' : "";
+  switch (typeof value) {
+    case "string":
+      return '"' + value.replace(/\"/g, '""') + '"';
+    
+    case "object":
+      return '"' + JSON.stringify(value).replace(/\"/g, '""') + '"';
+    
+    default:
+      return "";
+  }
 }
