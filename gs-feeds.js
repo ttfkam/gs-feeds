@@ -40,6 +40,7 @@ function loadFeeds() {
     err.write(`Loading ${results.length} entries from ${feeds.length} feed(s)\n`);
     // Extract info and write out as CSV
     let rows = yield Promise.all(results);
+    err.write(`Loaded ${rows.length} entries from ${feeds.length} feed(s)\n`);
     rows.filter(row => !!row).forEach(row => out.write(row.map(csvQuote).join(',') + '\n'));
   });
 }

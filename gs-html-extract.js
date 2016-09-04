@@ -32,7 +32,6 @@ function getContent($) {
 }
 
 function extractMetadata(entry, html) {
-  err.write(`Info: Loaded ${entry.url}: ${html.substring(0,40)}...`);
   let $ = cheerio.load(html),
       info = extract($, $("meta[property]"),$("meta[name]"),$("link[rel]"));
   FIELDS.forEach(field => {
