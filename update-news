@@ -7,8 +7,8 @@ DIR=$(dirname "$0")
 echo "Directory is $DIR"
 
 $PSQL "$DIR/pending-feeds.sql"   \
-  | nodejs                       \
-      "$DIR/gs-feeds.js"    \
+  | nodejs $DEBUG                \
+      "$DIR/gs-feeds.js"         \
   | tee "$DIR/news.csv"          \
   | $PSQL "$DIR/import-news.sql"
 
