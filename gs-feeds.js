@@ -49,7 +49,7 @@ function csvQuote(value, index) {
     return value;
   } else if (typeof value === "object") {
     return '"' + JSON.stringify(value).replace(/\"/g, '""') + '"';
-  } else if (!!value) {
+  } else if (!value) {
     return "";
   } else {
     return '"' + value.replace(/\"/g, '""') + '"';
