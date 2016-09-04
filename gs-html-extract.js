@@ -10,15 +10,15 @@ function extractLinks(feed, html) {
   err.write(`${feed.url} loaded...`)
   let $ = cheerio.load(html),
       links = [],
-      selector = `${feed.entries[0]}:not(${feed.exclude})`;
+      selector = `${feed.entries}:not(${feed.exclude_selector})`;
   $(selector).each((index, el) => {
     let $el = $(el);
     links.push({
       feedId: feed.id,
-      title: $el.find(feed.title).text(),
-      url: $el.find(feed.link).attr('href'),
-      label: $el.find(feed.label).text(),
-      discussion: $el.find(feed.discussion).attr('href'),
+      title: $el.find(feed.title_selector).text(),
+      url: $el.find(feed.link_selector).attr('href'),
+      label: $el.find(feed.label_selector).text(),
+      discussion: $el.find(feed.discussion_selector).attr('href'),
       remote_id: $el.attr("id").substring("thing_".length)
     });
   });
@@ -32,6 +32,7 @@ function getContent($) {
 }
 
 function extractMetadata(entry, html) {
+  try {
   let $ = cheerio.load(html),
       info = extract($, $("meta[property]"),$("meta[name]"),$("link[rel]"));
   FIELDS.forEach(field => {
@@ -59,6 +60,9 @@ function extractMetadata(entry, html) {
     info.image,
     entry.remote_id
   ];
+  } catch (e) {
+    return [e];
+  }
 }
 
 function extract($, $prop, $name, $rel) {
