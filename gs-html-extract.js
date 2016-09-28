@@ -1,7 +1,7 @@
 "use strict"
 
 const FIELDS = ("site_name|canonical|url|title|description|type|locale" +
-                "|content|image|audio|shortlink|cre|domain").split('|');
+                "|content|image|audio|shortlink|cre|domain|shortcut icon").split('|');
 
 let err = process.stderr,
     cheerio = require('cheerio');
@@ -57,6 +57,7 @@ function extractMetadata(entry, html) {
     escapeLabels(entry.label, info.news_keywords),
     (info.content || "").replace(/[\n\r]+/g, " "),
     info.image,
+    info["shortcut icon"],
     entry.remote_id
   ];
 }
