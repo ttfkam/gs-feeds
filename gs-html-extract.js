@@ -1,7 +1,8 @@
 "use strict"
 
 const FIELDS = ("site_name|canonical|url|title|description|type|locale" +
-                "|content|image|audio|shortlink|cre|domain|shortcut icon").split('|');
+                "|content|image|audio|shortlink|cre|domain|shortcut icon").split('|'),
+      DOMAIN_RE = /^https?:\/\/[^\/:]+(?::\d+)?/;
 
 let err = process.stderr,
     cheerio = require('cheerio');
@@ -31,6 +32,19 @@ function getContent($) {
   return content;
 }
 
+function normalizeUrl(url, domain) {
+  if (url == null) {
+    return null;
+  }
+  if (url.startsWith("//")) {
+    return "https:" + url;
+  }
+  if (url.charAt(0) === '/') {
+    return domain + url;
+  }
+  return url;
+}
+
 function extractMetadata(entry, html) {
   let $ = cheerio.load(html),
       info = extract($, $("meta[property]"),$("meta[name]"),$("link[rel]"));
@@ -38,15 +52,13 @@ function extractMetadata(entry, html) {
     info[field] = info[`og:${field}`] || info[field] || info[`twitter:${field}` || ""];
   });
   info.content = getContent($);
-  let url = info.canonical || info.short_link || info.shortlink || "";
-  if (url.startsWith("//")) {
-    url = "https:" + url;
-  }
+  let domain = entry.url.match(DOMAIN_RE)[0],
+      url = normalizeUrl(info.canonical || entry.url, domain);
   return [
     entry.feedId,
     info.site_name || info.cre
                    || entry.url.match(/^https?:\/\/(?:www\.|mail\.|hosted\.)?([^\/:]+)/)[1],
-    url.charAt(0) === '/' ? entry.url : url || entry.url,
+    url,
     {
       title: info.title || entry.title,
       description: (info.description || "").replace(/[\n\r]+/g, " "),
@@ -56,8 +68,8 @@ function extractMetadata(entry, html) {
     entry.discussion,
     escapeLabels(entry.label, info.news_keywords),
     (info.content || "").replace(/[\n\r]+/g, " "),
-    info.image,
-    info["shortcut icon"],
+    normalizeUrl(info.image),
+    normalizeUrl(info["shortcut icon"], domain),
     entry.remote_id
   ];
 }
