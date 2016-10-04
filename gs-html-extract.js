@@ -68,7 +68,7 @@ function extractMetadata(entry, html) {
     entry.discussion,
     escapeLabels(entry.label, info.news_keywords),
     (info.content || "").replace(/[\n\r]+/g, " "),
-    normalizeUrl(info.image) || "",
+    normalizeUrl(info.image || "/favicon.ico"),
     normalizeUrl(info["shortcut icon"], domain) || "",
     entry.remote_id
   ];
