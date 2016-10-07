@@ -1,7 +1,7 @@
 "use strict"
 
 const FIELDS = ("site_name|canonical|url|title|description|type|locale" +
-                "|content|image|audio|shortlink|cre|domain|shortcut icon").split('|'),
+                "|content|image|audio|shortlink|cre|domain|shortcut icon|icon").split('|'),
       DOMAIN_RE = /^https?:\/\/[^\/:]+(?::\d+)?/;
 
 let err = process.stderr,
@@ -69,7 +69,7 @@ function extractMetadata(entry, html) {
     escapeLabels(entry.label, info.news_keywords),
     (info.content || "").replace(/[\n\r]+/g, " "),
     normalizeUrl(info.image || "/favicon.ico", domain),
-    normalizeUrl(info["shortcut icon"], domain) || "",
+    normalizeUrl(info["shortcut icon"] || info.icon || "/favicon.ico", domain),
     entry.remote_id
   ];
 }
