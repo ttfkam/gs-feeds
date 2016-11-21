@@ -63,7 +63,7 @@ function extractMetadata(entry, html) {
       title: info.title || entry.title,
       description: (info.description || "").replace(/[\n\r]+/g, " "),
       type: info.type || "article",
-      locale: info.locale || "en"
+      locale: info.locale || $("html").attr("lang") || "en"
     },
     entry.discussion,
     escapeLabels(entry.label, info.news_keywords),
